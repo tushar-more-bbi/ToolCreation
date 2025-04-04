@@ -64,7 +64,7 @@ export const HtmlPre = ({ elements }) => {
     <div className="htmlpre">
 
       <p>
-        <h3>Html Preview</h3>
+        <h3>HTML Preview</h3>
         <form className="filename-form" onSubmit={(e) => e.preventDefault()}>
         <input type="text" name="filename" value={filename} onChange={handleSetFileName} placeholder="Enter Filename" />
         <button onClick={downloadHtmlFile} class="btn btn-primary">
