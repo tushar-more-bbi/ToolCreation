@@ -1,0 +1,72 @@
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+.main-form {
+    border: 3px solid black;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* Dropdown Styling */
+select {
+    margin: 5px 0;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+/* Input Field Styling */
+input {
+    margin: 5px 0;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+
+/* Table Styling */
+table.table,
+table.recomm-table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 10px auto;
+    font-size: 14px;
+    border: 1px solid #999;
+    background-color: #fff;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Table Borders */
+td + td, th + th {
+    border-left: 1px solid #999;
+}
+
+tr + tr {
+    border-top: 1px solid #999;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+    gap: 8px;
+}
+
+button{
+    margin: 5px;
+}
