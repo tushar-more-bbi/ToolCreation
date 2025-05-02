@@ -29,16 +29,15 @@ export const HtmlPre = ({ elements }) => {
       <link rel="stylesheet" type="text/css" href="/treeflex_testing.css">
       <link rel="stylesheet" type="text/css" href="/ESPEN_Tool.css">
   </head>
-  
   <body>
       <div class="container">
           <div class="row">
-              <a href="overview.html">
+              <a href="javascript:;">
                   <img class="pull-right" src="/tree.png" height="40rem" style="margin-right: 2%;">
               </a>
           </div>
           <br>
-          ${elements.join("\n")}
+           ${elements.map(obj => obj.element).join("\n")}
       </div>
   </body>
   </html>
@@ -62,7 +61,6 @@ export const HtmlPre = ({ elements }) => {
 
   return (
     <div className="htmlpre">
-
       <p>
         <h3>HTML Preview</h3>
         <form className="filename-form" onSubmit={(e) => e.preventDefault()}>

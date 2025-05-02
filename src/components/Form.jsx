@@ -4,25 +4,30 @@ import { EditForm } from "./editForm";
 
 
 export const Form = ({ elements, setElements }) => {
-  
+
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedElement, setSelectedElement] = React.useState("");// Store Selected Element
   const [text, setText] = React.useState("");//Store Text
+  const [anchortext, setAnchorText] = React.useState("");//Store Text
   const [rows, setRows] = React.useState([]); // Store table rows dynamically
   const [resultObj, setresultObj] = React.useState([]); // Store the result object
   const [editStep, setEditStep] = React.useState(null); // Store the step to be edited
 
+
+
+
+
   // Element name & their entire HTML code
   const elementObjects = {
-    startingBoxWithFullWidth : `<div class="row flex-row">
+    startingBoxWithFullWidth: `<div class="row flex-row">
                   <div class="starting-box" style="width: 98%">
                    <div class="starting-box" style="width: 100%">
                     <p class="text-center">${text}</p>
                   </div>
                   </div>
                   </div>`,
-    
-    startingBox :  `<div class="row flex-row">
+
+    startingBox: `<div class="row flex-row">
             <div class="starting-box">
 
                 <div class="starting-box">
@@ -35,13 +40,14 @@ export const Form = ({ elements, setElements }) => {
                 </div>
 
             </div>
-        </div>`    ,       
+                 </div>`,
 
     arrowDownCenter: `<div class="row flex-row">
                         <div class="col-xs-12 text-center">
                          <i class="fa fa-long-arrow-down"></i>
                         </div>
                       </div>`,
+
     recommBox: `<div class="row flex-row">
                   <div class="col-xs-12 recomm-box">
                     <a href="javascript:;"></a>
@@ -50,6 +56,7 @@ export const Form = ({ elements, setElements }) => {
                       </div>
                   </div>
                </div>`,
+
     arrowDownStart: `<div class="row flex-row">
                        <div class="col-xs-2 text-center">
                          <i class="fa fa-long-arrow-down"></i>
@@ -66,7 +73,8 @@ export const Form = ({ elements, setElements }) => {
                        <div class="col-xs-2 text-center">
                          <i class="fa fa-long-arrow-down"></i>
                        </div>
-                     </div>`,              
+                     </div>`,
+
     optionbox: `<div class="row flex-row">
                   <div class="col-xs-1 text-center">
 
@@ -75,7 +83,7 @@ export const Form = ({ elements, setElements }) => {
                         <i class="fa fa-long-arrow-right"></i>
                       </div>
                     <div class="col-xs-9 option-box">
-                    <a href="javascript:;">
+                    <a href="javascript:;${anchortext}.html">
                     </a>
                     <div class="option-box-inner">
                      <p class="text-white text-center">${text}
@@ -83,11 +91,12 @@ export const Form = ({ elements, setElements }) => {
                     </div>
                    </div>
                      </div>`,
-     questionBox: `<div class="row flex-row">
+
+    questionBox: `<div class="row flex-row">
             <table class="text-center">
                 <tbody><tr>
                     <td>
-                        <a href="javascript:;">
+                        <a href="javascript:;${anchortext}.html">
                             <div class="diamond">
                                 <p class="text-center text-primary"><b>YES</b></p>
                             </div>
@@ -97,13 +106,12 @@ export const Form = ({ elements, setElements }) => {
                     <td>
                         <div class="decision-box">
                             <p class="text-center">${text}
-
                             </p>
                         </div>
                     </td>
                     <td> <i class="fa fa-long-arrow-right"></i></td>
                     <td>
-                        <a href="javascript:;">
+                        <a href="javascript:;${anchortext}.html">
                             <div class="diamond">
                                 <p class="text-center text-primary"><b>NO</b></p>
                             </div>
@@ -111,7 +119,7 @@ export const Form = ({ elements, setElements }) => {
                     </td>
                 </tr>
             </tbody></table>
-        </div>`                
+            </div>`
   };
 
   const handleSelectedElement = (e) => {
@@ -122,18 +130,27 @@ export const Form = ({ elements, setElements }) => {
     setText(e.target.value);
   };
 
+  const handleAnchorText = (e) => {
+    setAnchorText(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+
 
     // Create new row object
     const newRow = {
       id: rows.length + 1, // Unique ID for Step
       element: selectedElement,
       text: text,
+      anchortext: anchortext,
     };
 
 
-    setElements([...elements, elementObjects[selectedElement]]);
+    setElements([...elements, { id: newRow.id, element: elementObjects[selectedElement], text: text,anchortext: anchortext, }]); // Append new row to elements state
+
+    console.log(elements);
 
     setresultObj([...resultObj, newRow]);
 
@@ -141,19 +158,23 @@ export const Form = ({ elements, setElements }) => {
     setRows([...rows, newRow]); // Append new row to state
 
     setText(""); // Reset text field after adding
-    
+    setAnchorText(""); // Reset anchor text field after adding
+
   };
- 
+
   const handleDelete = (rowId) => {
+
     // Remove the row from the rows state
     const updatedRows = rows.filter((r) => r.id !== rowId);
-    
+
     // Remove the corresponding row from resultObj state
     const updatedResultObj = resultObj.filter((r) => r.id !== rowId);
-    
+
     // Remove the corresponding element from setElements state
-    const updatedElements = elements.filter((_, index) => index !== rowId - 1); // assuming `rowId` starts from 1 and corresponds to the index
-  
+    const updatedElements = elements.filter((e) => e.id !== rowId); // assuming `rowId` starts from 1 and corresponds to the index
+
+
+
     // Update states
     setRows(updatedRows);
     setresultObj(updatedResultObj);
@@ -161,14 +182,16 @@ export const Form = ({ elements, setElements }) => {
   };
 
   const handleEdit = (rowId) => {
+
+
     const rowToEdit = rows.find((r) => r.id === rowId);
+
+
+
     setEditStep(rowToEdit); // Store the step to be edited
     //Open the modal
     setIsModalOpen(true);
-    
-    // console.log(rowToEdit);
-   
-    
+
   }
 
   const closeModal = () => {
@@ -185,13 +208,13 @@ export const Form = ({ elements, setElements }) => {
         <table className="table">
           <colgroup>
             <col width="10%" />
-            <col width="75%" />
-            <col width="15%" />
+            <col width="70%" />
+            <col width="20%" />
           </colgroup>
           <tbody>
             <tr>
               <th>Step ID</th>
-              <th>Element Type & Text</th>
+              <th>Element Type - Text - AnchorText</th>
               <th>Actions</th>
             </tr>
 
@@ -200,24 +223,24 @@ export const Form = ({ elements, setElements }) => {
               <tr key={row.id}>
                 <td>{row.id}</td>
                 <td>
-                  {row.element} - {row.text}
+                  {row.element} - {row.text} - {row.anchortext}
                 </td>
                 <td>
                   <button
-                    class="btn btn-primary btn-sm" 
+                    class="btn btn-primary btn-sm"
                     // onClick={() => alert("Edit step " + row.id)}
                     onClick={() => handleEdit(row.id)}
                   >
                     <i class="bi bi-pencil"></i> Edit
                   </button>
 
-                  {isModalOpen && <EditForm onClose={closeModal} editStep={editStep} setEditStep={setEditStep} rows={rows} setRows={setRows} elements={elements} setElements={setElements} elementObjects={elementObjects}/>}
+                  {isModalOpen && <EditForm onClose={closeModal} editStep={editStep} setEditStep={setEditStep} rows={rows} setRows={setRows} elements={elements} setElements={setElements} elementObjects={elementObjects} />}
 
                   <button
                     class="btn btn-danger btn-sm"
                     // onClick={() => {setRows(rows.filter((r) => r.id !== row.id));  setresultObj(resultObj.filter((r) => r.id !== row.id));    }}  
                     onClick={() => handleDelete(row.id)}
-                  
+
                   >
                     <i class="bi bi-trash"></i> Delete
                   </button>
@@ -252,6 +275,16 @@ export const Form = ({ elements, setElements }) => {
                     onChange={handleSetText}
                     placeholder="Enter text"
                   />
+
+                  <input
+                    type="text"
+                    name="anchortext"
+                    value={anchortext}
+                    onChange={handleAnchorText}
+                    placeholder="Enter Anchor text"
+                  />
+
+
                 </form>
               </td>
               <td>
