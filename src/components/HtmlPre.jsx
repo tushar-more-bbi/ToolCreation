@@ -79,6 +79,7 @@ export const HtmlPre = ({ elements }) => {
           border: "1px solid #ccc",
         }}
         srcDoc={htmlTemplate}
+        
       />
     </div>
   );
